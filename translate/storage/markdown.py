@@ -116,7 +116,7 @@ class MarkdownFile(base.TranslationStore):
 
         # emit a translation unit. The PO store takes care of the escaping.
         unit = self.addsourceunit(text)
-        unit.addlocation("{}+{}".format(self.filename or "", ".".join(path)))
+        unit.addlocation("{}{}".format(self.filename or "", ".".join(path)))
 
         # return translated text
         return self.callback(text)
@@ -272,7 +272,7 @@ class TranslatingMarkdownRenderer(MarkdownRenderer):
     def render_heading(
         self, token: block_token.Heading, max_line_length: int
     ) -> Iterable[str]:
-        self.path.append(f"headingthing:{token.line_number}")
+        self.path.append(f":{token.line_number}")
         content = list(super().render_heading(token, max_line_length=max_line_length))
         self.path.pop()
         return content
@@ -280,7 +280,7 @@ class TranslatingMarkdownRenderer(MarkdownRenderer):
     def render_setext_heading(
         self, token: block_token.SetextHeading, max_line_length: int
     ) -> Iterable[str]:
-        self.path.append(f"headingthing:{token.line_number}")
+        self.path.append(f":{token.line_number}")
         content = list(
             super().render_setext_heading(token, max_line_length=max_line_length)
         )
@@ -290,7 +290,7 @@ class TranslatingMarkdownRenderer(MarkdownRenderer):
     def render_quote(
         self, token: block_token.Quote, max_line_length: int
     ) -> Iterable[str]:
-        self.path.append(f"quote:{token.line_number}")
+        self.path.append(f":{token.line_number}")
         content = list(super().render_quote(token, max_line_length=max_line_length))
         self.path.pop()
         return content
@@ -298,7 +298,7 @@ class TranslatingMarkdownRenderer(MarkdownRenderer):
     def render_paragraph(
         self, token: block_token.Paragraph, max_line_length: int
     ) -> Iterable[str]:
-        self.path.append(f"p:{token.line_number}")
+        self.path.append(f":{token.line_number}")
         content = list(super().render_paragraph(token, max_line_length=max_line_length))
         self.path.pop()
         return content
@@ -306,7 +306,7 @@ class TranslatingMarkdownRenderer(MarkdownRenderer):
     def render_list_item(
         self, token: block_token.ListItem, max_line_length: int
     ) -> Iterable[str]:
-        self.path.append(f"list-item:{token.line_number}")
+        self.path.append(f":{token.line_number}")
         content = list(super().render_list_item(token, max_line_length=max_line_length))
         self.path.pop()
         return content
@@ -314,7 +314,7 @@ class TranslatingMarkdownRenderer(MarkdownRenderer):
     def render_table(
         self, token: block_token.Table, max_line_length: int
     ) -> Iterable[str]:
-        self.path.append(f"table-cell:{token.line_number}")
+        self.path.append(f":{token.line_number}")
         content = list(super().render_table(token, max_line_length=max_line_length))
         self.path.pop()
         return content
@@ -322,7 +322,7 @@ class TranslatingMarkdownRenderer(MarkdownRenderer):
     def render_link_reference_definition_block(
         self, token: LinkReferenceDefinitionBlock, max_line_length: int
     ) -> Iterable[str]:
-        self.path.append(f"linkref:{token.line_number}")
+        self.path.append(f":{token.line_number}")
         content = list(
             super().render_link_reference_definition_block(
                 token, max_line_length=max_line_length
